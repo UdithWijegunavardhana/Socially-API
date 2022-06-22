@@ -1,12 +1,12 @@
-import { Advertiser } from './../advertiser/advertiser.entity';
-import { AdvertiserDto } from './../advertiser/advertiserDto';
+import { AdvertiserPasswordChangeDto } from './../advertiser/dto/advertiserPasswordChange.dto';
+import { Advertiser } from '../advertiser/advertiser.entity';
+import { AdvertiserDto } from '../advertiser/dto/advertiserDto';
 import { Publisher } from './../Publisher/publisher.entity';
 import { PublisherDto } from '../Publisher/Publisher.dto';
-import { PublisherMobileNoDto } from './../Publisher/publisherMobile.dto';
 
 export const toAdvertiserDto = (data: Advertiser):AdvertiserDto  =>  {  
-    const { id, name, email,password,generatedOTP,otpSentTime ,isActive } = data;
-    let advertiserDto: AdvertiserDto = { id, name, email,password,generatedOTP,otpSentTime,isActive};
+    const { id, name, email,role,password,generatedOTP,otpSentTime ,isActive ,stripeCustomerId} = data;
+    let advertiserDto: AdvertiserDto = { id, name, email,role,password,generatedOTP,otpSentTime,isActive,stripeCustomerId};
     return advertiserDto;
 };
 

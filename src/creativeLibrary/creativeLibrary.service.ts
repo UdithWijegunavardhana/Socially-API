@@ -1,12 +1,8 @@
-import { Body, Controller,Injectable, Delete, Get, HttpCode, NotFoundException, Param, Post, Put,UseInterceptors,UploadedFile, Bind,UploadedFiles, Res, } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 //import { HttpException, HttpStatus, Injectable, Options, Param } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreativeLibrary } from './creativeLibrary.entity';
-import { creativeLibraryController } from './creativeLibrary.controller';
-import { updateCreativeLibraryDTO } from './updateCreativeLibraryDTO.dto';
-import { AdvertiserService } from 'src/advertiser/advertiser.service';
-
 
 @Injectable()
 export class creativeLibraryService {
@@ -41,21 +37,28 @@ export class creativeLibraryService {
     //     return null;
     //   }
     
-    //   //create a creative library
-    //   async createCreativeLibrary(creativeLibraryCreation: CreativeLibrary): Promise<CreativeLibrary> {
-    //   return await this.creativeLibraryRepository.save(creativeLibraryCreation);
-    //   }
+      //create a creative library
+      async createCreativeLibrary(creativeLibraryCreation: CreativeLibrary): Promise<CreativeLibrary> {
+      return await this.creativeLibraryRepository.save(creativeLibraryCreation);
+      }
       
-    //   //update a creative library
-    //   async UpdateCreativeLibrary(updateCreativeLibraryDTO:updateCreativeLibraryDTO ): Promise<CreativeLibrary>{
-    //       const{creativeLibraryId,creativeLibraryHeading,creativeLibraryDescription,costPerSale,destinationURL,creativeLibraryType,deletedAt,}= updateCreativeLibraryDTO;
+      //update a creative library
+      // async updateCreativeLibrary(updateCreativeLibraryDTO:updateCreativeLibraryDTO ): Promise<CreativeLibrary>{
+      //     const{thumbnailImagePath}= updateCreativeLibraryDTO;
+      //     const creativelib = await this.getCreativeLibraryById(creativeLibraryId);
+      //     creativelib.thumbnailImagePath = thumbnailImagePath;
+      //     return this.creativeLibraryRepository.save(creativeLibraryId)
+      // }
+    // async  createavatar(Campaign:Campaign,): Promise<avatar> {  
+    //   avatar.Advertiser = Advertiser;
+    //   return await this.creativeRepository.save(avatar);
     //   }
 
        
 
 }
-        
-     
 
-    
+
+
+
 

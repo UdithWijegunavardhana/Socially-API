@@ -1,9 +1,9 @@
 import { IsNotEmpty, MaxLength } from "class-validator"
 
-export class NewPublisherDto{
+export class NewPublisherDto {
 
     @IsNotEmpty()
-    phoneNumber:string;
+    phoneNumber: string;
 
     @IsNotEmpty()
     @MaxLength(6)

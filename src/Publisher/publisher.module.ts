@@ -3,14 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Publisher } from './publisher.entity';
 import { PublisherController } from './publisher.controller';
 import { PublisherService } from './publisher.service';
-import { OtpService } from 'src/OTP/otp.service';
+// import { OtpService } from 'src/OTP/otp.service';
 import { StripeService } from 'src/stripe-publisher/stripe.service';
+import { OtpService } from '../OTP/otp.service';
 
 @Module({
-    imports:[TypeOrmModule.forFeature([Publisher])],
+    imports: [TypeOrmModule.forFeature([Publisher])],
     controllers: [PublisherController],
     providers:[PublisherService,OtpService , StripeService],
     exports : [PublisherService ]
 })
 
-export class PublisherModule {}
+export class PublisherModule { }
