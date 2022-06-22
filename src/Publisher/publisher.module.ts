@@ -4,12 +4,13 @@ import { Publisher } from './publisher.entity';
 import { PublisherController } from './publisher.controller';
 import { PublisherService } from './publisher.service';
 import { OtpService } from 'src/OTP/otp.service';
+import { StripeService } from 'src/stripe-publisher/stripe.service';
 
 @Module({
     imports:[TypeOrmModule.forFeature([Publisher])],
     controllers: [PublisherController],
-    providers:[PublisherService,OtpService],
-    exports : [PublisherService]
+    providers:[PublisherService,OtpService , StripeService],
+    exports : [PublisherService ]
 })
 
 export class PublisherModule {}

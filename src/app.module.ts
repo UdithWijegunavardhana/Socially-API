@@ -18,6 +18,7 @@ import { AdSharingController } from './ad-sharing/ad-sharing.controller';
 import { AdSharingService } from './ad-sharing/ad-sharing.service';
 import { AdSharingModule } from './ad-sharing/ad-sharing.module';
 import { PublisherTransactionModule } from './publisher-transaction/publisher-transaction.module';
+import { StripeModule } from './stripe-publisher/stripe.module';
 
 @Dependencies(Connection)
 @Module({
@@ -37,7 +38,8 @@ import { PublisherTransactionModule } from './publisher-transaction/publisher-tr
     MailModule,
     CreativePreviewModule,
     AdSharingModule,
-    PublisherTransactionModule
+    PublisherTransactionModule,
+    StripeModule
   ],
   controllers: [AppController, AdSharingController],
   providers: [AppService, AdSharingService],

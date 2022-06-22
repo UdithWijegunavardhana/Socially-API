@@ -11,13 +11,18 @@ import { OtpSendingStatus } from 'src/auth/interfaces/regisration-status.interfa
 import { PublisherOtpDto } from './publisherUpdate.dto';
 import { PublisherCreateDto } from './publisherCreate.dto';
 import { OtpService } from './../OTP/otp.service';
+import { StripeService } from 'src/stripe-publisher/stripe.service';
+
 var otpGenerator = require('otp-generator');
 
 @Injectable()
 export class PublisherService {
     constructor(
         @InjectRepository(Publisher)
-        private publisherRepository: Repository<Publisher>, private readonly otpService:OtpService
+        private publisherRepository: Repository<Publisher>, 
+        private readonly otpService:OtpService,
+        private stripeService: StripeService
+
     ){}
 
     async findPublisherById(id:number):Promise<PublisherCreateDto>{
@@ -44,14 +49,14 @@ export class PublisherService {
             const otp = otpGenerator.generate(6,{alphabets:false,upperCase:false,lowerCase:false,specialChars:false})
             const newPublisher:NewPublisherDto={
                 phoneNumber:publisherMobileNoDto.phoneNumber,
-                otp
+                otp,
+            
             }
             if(publisher){
                 await this.setOtp(newPublisher)
                 status={
                     IsOtpSend:true
-                }  
-                    
+                }        
             }
             else{
                 try{
@@ -63,7 +68,6 @@ export class PublisherService {
                     throw new HttpException(err,HttpStatus.BAD_REQUEST)
                 }
             }
-
             return status;
         }
 
@@ -80,13 +84,13 @@ export class PublisherService {
         }
         return publisher;
         }
-    async createPublisher(newpublisherDto:NewPublisherDto)
-    {
-        const {phoneNumber,otp} = newpublisherDto;
 
-            const publisher : Publisher = await this.publisherRepository.create({userName:"",phoneNumber,otp});
-            await this.publisherRepository.save(publisher);
-            return toPublisherDto(publisher);
+    async createPublisher(newpublisherDto:NewPublisherDto){
+        const {phoneNumber,otp} = newpublisherDto;
+        const publisher : Publisher = await this.publisherRepository.create({userName:"",phoneNumber,otp});
+        const stripeCustomer = await this.stripeService.createCustomer(publisher.userName, publisher.phoneNumber);
+        await this.publisherRepository.save(publisher);
+        return toPublisherDto(publisher);
     }
 
     async setOtp(publisherUpdateDto:PublisherOtpDto){
@@ -99,8 +103,8 @@ export class PublisherService {
     async createVerifiedPublisher(publisherCreateDto:PublisherCreateDto):Promise<PublisherDto>{
         const{phoneNumber,userName} = publisherCreateDto
         const publisher = await this.publisherRepository.findOne({where:{phoneNumber}})
-
         publisher.userName = userName
+        // const stripeCustomer = await this.stripeService.createCustomer(publisher.userName, publisher.phoneNumber);
         this.publisherRepository.save(publisher)
         return publisher;
     }

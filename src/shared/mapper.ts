@@ -11,11 +11,10 @@ export const toAdvertiserDto = (data: Advertiser):AdvertiserDto  =>  {
 };
 
 export const toPublisherDto = (data:Publisher): PublisherDto =>{
-    const {publisherId, userName, phoneNumber,otp} = data;
-    let publisherDto : PublisherDto = {publisherId, userName, phoneNumber,otp}
+    const {publisherId, userName, phoneNumber,otp,stripeCustomerId} = data;
+    let publisherDto : PublisherDto = {publisherId, userName, phoneNumber,otp, stripeCustomerId}
     return publisherDto;
 }
-
 
 // export const toPublisherMobileDto = (data:Publisher):PublisherMobileDto=>{
 //     const {publisherId, userName, mobileNumber} = data;

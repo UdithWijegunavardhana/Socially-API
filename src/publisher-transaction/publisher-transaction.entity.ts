@@ -18,7 +18,7 @@ export class PublisherTransaction{
     @Column()
     type : string
 
-    @Column()
+    @Column({default:true})
     publisherId : number
 
     @JoinColumn({name: 'publisherId'})

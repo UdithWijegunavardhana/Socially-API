@@ -9,4 +9,6 @@ export class PublisherDto{
     phoneNumber:string;
 
     otp:string
+
+    stripeCustomerId: string
 }

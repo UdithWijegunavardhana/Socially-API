@@ -6,7 +6,10 @@ import { join } from 'path';
 async function bootstrap() {
   
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.enableCors();
+  app.enableCors({
+    // origin: configService.get('FRONTEND_URL'),
+    // credentials: true
+  });
 
   app.useStaticAssets(join(__dirname, '..', 'public'));
   app.setBaseViewsDir(join(__dirname, '../../views'));

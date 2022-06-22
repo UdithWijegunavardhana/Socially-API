@@ -5,4 +5,5 @@ export class PublisherMobileNoDto{
     @MaxLength(10)
     @IsNumber()
     phoneNumber: string
+
 }

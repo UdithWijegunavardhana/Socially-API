@@ -8,4 +8,6 @@ export class NewPublisherDto{
     @IsNotEmpty()
     @MaxLength(6)
     otp:string
+
+    // stripeCustomerId: string
 }

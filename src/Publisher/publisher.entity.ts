@@ -13,4 +13,7 @@ export class Publisher{
 
     @Column()
     otp:string
+
+    @Column({nullable:true})
+    public stripeCustomerId: string;
 }
