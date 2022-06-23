@@ -1,37 +1,31 @@
-import { Controller, Get, UseGuards, Request, Body, Post } from '@nestjs/common';
+import { Controller, Get, UseGuards,Request,Put, Body , Post, Param } from '@nestjs/common';
 import { JwtAuthGuard } from './../auth/jwt.guard';
 import { PublisherTransactionService } from './publisher-transaction.service';
 import { PublisherTransaction } from './publisher-transaction.entity';
+import { PublisherTransactionDTO } from './publisher-transaction.dto';
 
 @Controller('publisher-transaction')
 export class PublisherTransactionController {
-    constructor(private publisherTransactionService: PublisherTransactionService) { }
+    constructor(private publisherTransactionService: PublisherTransactionService) {}
 
     @Get()
-    async findAllTransactions() {
+    async findAllTransactions(){
         return await this.publisherTransactionService.findAll();
     }
 
-    @Post('withdraw')
+    @Post('create')
     @UseGuards(JwtAuthGuard)
-    async create(@Body() publisherTransaction: PublisherTransaction, @Request() req): Promise<PublisherTransaction> {
-        return await this.publisherTransactionService.create(publisherTransaction, req.user.userId);
+    async create( @Body() publisherTransaction: PublisherTransaction , @Request() req ): Promise<PublisherTransaction> {
+        return await this.publisherTransactionService.create(publisherTransaction , req.user.userId);
     }
 
     @Get('transactionsByPublisherId')
     @UseGuards(JwtAuthGuard)
-    async findByPublisherId(@Request() req): Promise<PublisherTransaction[]> {
+    async findByPublisherId( @Request() req ): Promise<PublisherTransaction[]> {
         const publisherId = req.user.userId;
         const publisherTransaction = await this.publisherTransactionService.findByPublisherId(publisherId);
         console.log(publisherTransaction);
         return publisherTransaction;
-    }
-
-    @Get('balance')
-    @UseGuards(JwtAuthGuard)
-    async getBalance(@Request() req): Promise<{ amount: number }> {
-        const publisherId = req.user.userId;
-        return this.publisherTransactionService.balance(publisherId);
     }
 
 }
