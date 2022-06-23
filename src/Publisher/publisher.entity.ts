@@ -20,4 +20,5 @@ export class Publisher {
 
     @OneToMany(() => Conversion, Conversion => Conversion.publisher)
     public conversion: Conversion[]
+    
 }

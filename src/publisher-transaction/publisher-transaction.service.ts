@@ -15,8 +15,8 @@ export class PublisherTransactionService {
         return await this.publisherTransactionRepository.find();
     }
 
-    async create(publisherTransaction: PublisherTransaction, publisherID: string): Promise<PublisherTransaction> {
-        return await this.publisherTransactionRepository.save(publisherTransaction);
+    async create(amount: number, date: string, type: string, publisherId: number): Promise<PublisherTransaction> {
+        return await this.publisherTransactionRepository.save({ amount, date, type, publisherId });
     }
 
     async findByPublisherId(publisherId: Number): Promise<PublisherTransaction[]> {
@@ -41,13 +41,10 @@ export class PublisherTransactionService {
         const withdraw = await getRepository(PublisherTransaction)
             .createQueryBuilder("publisherTransaction")
             .select("SUM(PublisherTransaction.amount)", "sum")
-            .where('PublisherTransaction.publisherId = :publisherId AND PublisherTransaction.type = :type', { publisherId: publisherId, type: 'withdraw' })
+            .where('PublisherTransaction.publisherId = :publisherId AND PublisherTransaction.type = :type', { publisherId: publisherId, type: 'withdrawal' })
             .getRawOne()
 
-        console.log(earn)
-        console.log(withdraw.sum)
         const balance = (earn.sum - withdraw.sum)
-        console.log(balance)
         return { amount: balance };
     }
 
