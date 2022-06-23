@@ -15,7 +15,10 @@ export class PublisherTransactionController {
     @Post('withdraw')
     @UseGuards(JwtAuthGuard)
     async create(@Body() publisherTransaction: PublisherTransaction, @Request() req): Promise<PublisherTransaction> {
-        return await this.publisherTransactionService.create(publisherTransaction, req.user.userId);
+        console.log(publisherTransaction)
+        const { amount, date, type } = publisherTransaction
+        const publisherId = req.user.userId
+        return await this.publisherTransactionService.create(amount, date, type, publisherId);
     }
 
     @Get('transactionsByPublisherId')
