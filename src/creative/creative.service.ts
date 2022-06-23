@@ -1,9 +1,10 @@
+import { creativeLibraryService } from 'src/creativeLibrary/creativeLibrary.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Creative } from './creative.entity';
 import { UpdateCreativeDTO } from './updateCreativeDTO.dto';
-import {getConnection} from "typeorm";
+import { getConnection } from "typeorm";
 
 //import {CategoryNotFoundException} from './exceptions/categoryNotFound.exception';
 
@@ -12,51 +13,60 @@ export class creativeService {
   constructor(
     @InjectRepository(Creative)
     private creativeRepository: Repository<Creative>,
-
+    private readonly creativeLibService: creativeLibraryService
   ) { }
 
-    //gett all creatives
-    async  findAll(): Promise<Creative[]> {
-        return await this.creativeRepository.find();
-    }
+  //get all creatives Creative[]
+  async findAll(): Promise<any> {
 
-    async findallcreatives(campID : number):Promise<any>{
-        
-      const AD = await getConnection()
+    // const ads = await this.creativeRepository.find();
+    // ads.forEach(async (arrayItem) => {
+    //   var x = arrayItem.creativeId;
+    //   const image = await this.creativeLibService.findImagePath(x)
+    //   console.log(image.thumbnailImagePath)
+    // });
+
+
+    return await this.creativeRepository.find()
+  }
+
+  async findallcreatives(campID: number): Promise<any> {
+
+    const AD = await getConnection()
       .createQueryBuilder()
       .select("Creative")
-      .from(Creative,"Creative")
+      .from(Creative, "Creative")
       .where("Creative.campID = :campID", { campID: campID })
       .getMany();
-  
-       return AD;
-  }
-   //get a creative by id
-  
-    async getCreativeById(creativeId: number): Promise<Creative> {
-        const creative = await this.creativeRepository.findOne(
-            creativeId, 
-          {
-           
-            withDeleted: true 
-          }
-        );
-        if (creative) {
-          return creative;
-        }
-        //throw new CategoryNotFoundException(id);
-      }
-    
 
+    return AD;
+  }
+  //get a creative by id
+
+  async getCreativeById(creativeId: number): Promise<Creative> {
+    const creative = await this.creativeRepository.findOne(
+      creativeId,
+      {
+
+        withDeleted: true
+      }
+    );
+    if (creative) {
+      return creative;
+    }
     //throw new CategoryNotFoundException(id);
-  
+  }
+
+
+  //throw new CategoryNotFoundException(id);
+
 
   //Create a creative
 
-    //Create a creative
-  async  createCreative(creativeCreation: Creative): Promise<Creative> {  
+  //Create a creative
+  async createCreative(creativeCreation: Creative): Promise<Creative> {
     return await this.creativeRepository.save(creativeCreation);
-    }
+  }
 
   //update a creative
   async UpdateCreative(updateCreativeDTO: UpdateCreativeDTO): Promise<Creative> {

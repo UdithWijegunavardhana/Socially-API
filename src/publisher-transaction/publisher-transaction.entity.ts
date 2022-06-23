@@ -12,8 +12,8 @@ export class PublisherTransaction {
     @Column()
     date: string
 
-    @Column()
-    time: string
+    // @Column()
+    // time: string
 
     @Column()
     type: string

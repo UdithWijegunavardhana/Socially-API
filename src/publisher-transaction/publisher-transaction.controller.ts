@@ -12,7 +12,7 @@ export class PublisherTransactionController {
         return await this.publisherTransactionService.findAll();
     }
 
-    @Post('create')
+    @Post('withdraw')
     @UseGuards(JwtAuthGuard)
     async create(@Body() publisherTransaction: PublisherTransaction, @Request() req): Promise<PublisherTransaction> {
         return await this.publisherTransactionService.create(publisherTransaction, req.user.userId);
@@ -25,6 +25,13 @@ export class PublisherTransactionController {
         const publisherTransaction = await this.publisherTransactionService.findByPublisherId(publisherId);
         console.log(publisherTransaction);
         return publisherTransaction;
+    }
+
+    @Get('balance')
+    @UseGuards(JwtAuthGuard)
+    async getBalance(@Request() req): Promise<{ amount: number }> {
+        const publisherId = req.user.userId;
+        return this.publisherTransactionService.balance(publisherId);
     }
 
 }

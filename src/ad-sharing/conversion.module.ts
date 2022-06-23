@@ -1,3 +1,4 @@
+import { creativeLibraryModule } from '../creativeLibrary/creativeLibrary.module';
 import { PublisherTransaction } from '../publisher-transaction/publisher-transaction.entity';
 import { PublisherTransactionService } from '../publisher-transaction/publisher-transaction.service';
 import { Publisher } from '../Publisher/publisher.entity';
@@ -11,7 +12,7 @@ import { Creative } from '../creative/creative.entity';
 import { Conversion } from './conversion.entity';
 
 @Module({
-    imports: [creativeModule, TypeOrmModule.forFeature([Conversion, Publisher, Creative, PublisherTransaction])],
+    imports: [creativeModule, creativeLibraryModule, TypeOrmModule.forFeature([Conversion, Publisher, Creative, PublisherTransaction])],
     controllers: [ConversionController],
     providers: [ConversionService, creativeService, PublisherTransactionService],
     exports: [ConversionService]
