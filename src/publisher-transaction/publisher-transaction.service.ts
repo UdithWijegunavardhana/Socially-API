@@ -1,9 +1,8 @@
 import { creativeService } from './../creative/creative.service';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { PublisherTransaction } from './publisher-transaction.entity';
-import { PublisherTransactionDTO } from './publisher-transaction.dto';
 
 @Injectable()
 export class PublisherTransactionService {
@@ -29,9 +28,28 @@ export class PublisherTransactionService {
     async earning(publisherId: number, creativeId: number, date: string) {
         const creative = await this.creativeService.getCreativeById(creativeId)
         const amountPerClick = creative.costPerSale;
-        await this.publisherTransactionRepository.save({ amount: amountPerClick, date, time: date, type: 'earning', publisherId: publisherId })
+        await this.publisherTransactionRepository.save({ amount: amountPerClick, date, type: 'earning', publisherId: publisherId })
     }
 
+    async balance(publisherId: number): Promise<{ amount: number }> {
+        const earn = await getRepository(PublisherTransaction)
+            .createQueryBuilder("publisherTransaction")
+            .select("SUM(PublisherTransaction.amount)", "sum")
+            .where('PublisherTransaction.publisherId = :publisherId AND PublisherTransaction.type = :type', { publisherId: publisherId, type: 'earning' })
+            .getRawOne()
+
+        const withdraw = await getRepository(PublisherTransaction)
+            .createQueryBuilder("publisherTransaction")
+            .select("SUM(PublisherTransaction.amount)", "sum")
+            .where('PublisherTransaction.publisherId = :publisherId AND PublisherTransaction.type = :type', { publisherId: publisherId, type: 'withdraw' })
+            .getRawOne()
+
+        console.log(earn)
+        console.log(withdraw.sum)
+        const balance = (earn.sum - withdraw.sum)
+        console.log(balance)
+        return { amount: balance };
+    }
 
     // async findOne(id: number): Promise<PublisherTransaction> {
     //     return await this.publisherTransactionRepository.findOne(id);
