@@ -43,8 +43,9 @@ export class PublisherTransactionService {
             .select("SUM(PublisherTransaction.amount)", "sum")
             .where('PublisherTransaction.publisherId = :publisherId AND PublisherTransaction.type = :type', { publisherId: publisherId, type: 'withdrawal' })
             .getRawOne()
-
+        console.log(earn, withdraw)
         const balance = (earn.sum - withdraw.sum)
+        console.log(balance)
         return { amount: balance };
     }
 

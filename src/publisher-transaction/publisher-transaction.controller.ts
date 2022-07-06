@@ -31,4 +31,10 @@ export class PublisherTransactionController {
         return publisherTransaction;
     }
 
+    @Get('balance')
+    @UseGuards(JwtAuthGuard)
+    async getBalance(@Request() req): Promise<{ amount: number }> {
+        const publisherId = req.user.userId;
+        return this.publisherTransactionService.balance(publisherId);
+    }
 }
